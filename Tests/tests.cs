@@ -1,11 +1,12 @@
 ﻿using Calculator_Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-
+// Атрибут TestClass указывает на то, что класс содержит тесты
 [TestClass]
 public class CalculatorTests
 {
     [TestMethod]
+    // Тест на сложение
     public void Calculator_Parse_Addition()
     {
         // Arrange
@@ -20,6 +21,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на умножение
     public void Calculator_Parse_Multiplication()
     {
         // Arrange
@@ -34,6 +36,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на деление
     public void Calculator_Parse_Division()
     {
         // Arrange
@@ -48,6 +51,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на сложное выражение с скобками
     public void Calculator_Parse_ComplexExpression()
     {
         // Arrange
@@ -62,6 +66,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на вычитание
     public void Calculator_Parse_Subtraction()
     {
         // Arrange
@@ -90,6 +95,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на десятичное умножение
     public void Calculator_Parse_DecimalMultiplication()
     {
         // Arrange
@@ -104,6 +110,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на десятичное деление
     public void Calculator_Parse_DecimalDivision()
     {
         // Arrange
@@ -118,6 +125,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на десятичное сложение
     public void Calculator_Parse_DecimalAddition()
     {
         // Arrange
@@ -132,6 +140,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на деление на ноль
     public void Calculator_Parse_DivisionByZero()
     {
         // Arrange
@@ -143,6 +152,7 @@ public class CalculatorTests
     }
 
     [TestMethod]
+    // Тест на некорректный ввод
     public void Calculator_Parse_InvalidInput()
     {
         // Arrange

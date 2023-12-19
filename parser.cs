@@ -13,6 +13,7 @@ namespace Calculator_Parser
             InputString = sourceString ?? "0";
         }
 
+        // Получение следующего символа из входной строки
         private void GetSymbol()
         {
             if (index < InputString.Length)
@@ -33,18 +34,22 @@ namespace Calculator_Parser
         }
 
 
+        // Метод для разбора входной строки и выполнения вычислений
         public double Parse()
         {
+            // Проверка наличия входной строки
             if (string.IsNullOrWhiteSpace(InputString))
                 throw new ArgumentNullException("String is null or contains whitespace");
 
+            // Если входная строка равна "0", вернуть 0
             if (InputString == "0")
                 return 0;
-
+            // Инициализация индекса и первого символа
             index = 0;
             GetSymbol();
+            // Вызов метода для разбора выражения
             double result = MethodE();
-
+            // Проверка наличия ошибок в выражении
             if (isInvalid)
                 throw new InvalidOperationException("Invalid input");
 

@@ -5,13 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         Title="History" Height="350" Width="400">
+    <!-- Главный контейнер окна - Grid -->
     <Grid>
-        <ListView x:Name="historyListView">
+        <!-- ListView для отображения истории вычислений -->
+        <ListView x:Name="historyListView" SelectionChanged="HistoryListView_SelectionChanged">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Expression" DisplayMemberBinding="{Binding Expression}" Width="200"/>
                     <GridViewColumn Header="Result" DisplayMemberBinding="{Binding Result}" Width="100"/>
-                    <GridViewColumn Header="Timestamp" DisplayMemberBinding="{Binding Timestamp}" Width="100"/>
+                    <GridViewColumn Header="Time" DisplayMemberBinding="{Binding Timestamp}" Width="100"/>
                 </GridView>
             </ListView.View>
         </ListView>
