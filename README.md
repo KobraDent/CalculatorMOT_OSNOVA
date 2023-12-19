@@ -3,4 +3,3 @@
 Калькулятор основа: MainWindow.xaml, MainWindow.xaml.cs, parser.cs  
 Тесты: tests.cs  
 Бд: HistoryWindow.xaml, HistoryWindow.xaml.cs, operations.cs, HistoryItem.cs, CalculatorDbContext.cs  
-Доделать кнопку истории и возможность выбрать операцию из истории
