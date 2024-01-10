@@ -1,165 +1,169 @@
 ﻿using Calculator_Parser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-// Атрибут TestClass указывает на то, что класс содержит тесты
+
+// Атрибут TestClass указывает на то, что этот класс содержит набор тестов
 [TestClass]
 public class CalculatorTests
 {
-    [TestMethod]
     // Тест на сложение
+    [TestMethod]
     public void Calculator_Parse_Addition()
     {
-        // Arrange
+        // Arrange: Подготовка данных для теста
         string input = "2+2";
+
+        // Act: Выполнение действия (вызов парсера)
         Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
-        // Act
-        double result = parser.Parse();
-
-        // Assert
+        // Assert: Проверка результата (ожидаем, что результат равен 4)
         Assert.AreEqual(4, result);
     }
 
-    [TestMethod]
     // Тест на умножение
+    [TestMethod]
     public void Calculator_Parse_Multiplication()
     {
         // Arrange
         string input = "3.14*2";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
-        Assert.AreEqual(6.28, result);
+        Assert.AreEqual(6.28m, result);
     }
 
-    [TestMethod]
     // Тест на деление
+    [TestMethod]
     public void Calculator_Parse_Division()
     {
         // Arrange
         string input = "8/2";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
         Assert.AreEqual(4, result);
     }
 
+    // Тест на сложное выражение с использованием скобок
     [TestMethod]
-    // Тест на сложное выражение с скобками
     public void Calculator_Parse_ComplexExpression()
     {
         // Arrange
         string input = "2*(3+4)";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
         Assert.AreEqual(14, result);
     }
 
-    [TestMethod]
     // Тест на вычитание
+    [TestMethod]
     public void Calculator_Parse_Subtraction()
     {
         // Arrange
         string input = "5-3";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
         Assert.AreEqual(2, result);
     }
 
+    // Тест на выражение с использованием скобок
     [TestMethod]
     public void Calculator_Parse_ExpressionWithParentheses()
     {
         // Arrange
         string input = "(2+3)*4";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
         Assert.AreEqual(20, result);
     }
 
-    [TestMethod]
     // Тест на десятичное умножение
+    [TestMethod]
     public void Calculator_Parse_DecimalMultiplication()
     {
         // Arrange
         string input = "1.5*2.5";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
-        Assert.AreEqual(3.75, result);
+        Assert.AreEqual(3.75m, result);
     }
 
-    [TestMethod]
     // Тест на десятичное деление
+    [TestMethod]
     public void Calculator_Parse_DecimalDivision()
     {
         // Arrange
         string input = "10/4";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
-        Assert.AreEqual(2.5, result);
+        Assert.AreEqual(2.5m, result);
     }
 
-    [TestMethod]
     // Тест на десятичное сложение
+    [TestMethod]
     public void Calculator_Parse_DecimalAddition()
     {
         // Arrange
         string input = "0.1+0.2";
-        Parser parser = new Parser(input);
 
         // Act
-        double result = parser.Parse();
+        Parser parser = new Parser(input);
+        decimal result = parser.Parse();
 
         // Assert
-        Assert.AreEqual(0.3, result, 0.0001);
+        Assert.AreEqual(0.3m, result);
     }
 
-    [TestMethod]
     // Тест на деление на ноль
+    [TestMethod]
     public void Calculator_Parse_DivisionByZero()
     {
         // Arrange
         string input = "2/0";
-        Parser parser = new Parser(input);
 
-        // Act & Assert
+        // Act & Assert: Ожидаем, что при делении на ноль будет исключение InvalidOperationException
+        Parser parser = new Parser(input);
         Assert.ThrowsException<InvalidOperationException>(() => parser.Parse());
     }
 
-    [TestMethod]
     // Тест на некорректный ввод
+    [TestMethod]
     public void Calculator_Parse_InvalidInput()
     {
         // Arrange
         string input = "abc";
-        Parser parser = new Parser(input);
 
-        // Act & Assert
+        // Act & Assert: Ожидаем, что при некорректном вводе будет исключение InvalidOperationException
+        Parser parser = new Parser(input);
         Assert.ThrowsException<InvalidOperationException>(() => parser.Parse());
     }
 }
+
+

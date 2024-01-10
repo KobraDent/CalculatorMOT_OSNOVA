@@ -103,6 +103,7 @@
     <Compile Include="CalculatorDbContext.cs" />
     <Compile Include="HistoryItem.cs" />
     <Compile Include="Operations.cs" />
+    <Compile Include="Tests\tests2.cs" />
     <Compile Include="Tests\tests.cs" />
     <Compile Include="HistoryWindow.xaml.cs">
       <DependentUpon>HistoryWindow.xaml</DependentUpon>

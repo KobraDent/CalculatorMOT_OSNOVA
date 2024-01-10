@@ -9,30 +9,27 @@ namespace CalculatorMOT
     public partial class MainWindow : Window
     {
         // Переменные для отслеживания состояния калькулятора
-        private string currentInput = "";// Текущий ввод пользователя
-        private string operation = "";// Текущая операция (если выбрана)
-        private double firstNumber = 0;// Первое число для выполнения операции
-        private int cursorPositionIndex = 0;// Индекс курсора в строке ввода
-        private SQLiteConnection dbConnection;// Соединение с базой данных
+        private string currentInput = ""; // Текущий ввод пользователя
+        private string operation = "";    // Текущая операция (если выбрана)
+        private decimal firstNumber = 0;  // Первое число для выполнения операции
+        private int cursorPositionIndex = 0; // Индекс курсора в строке ввода
+        private SQLiteConnection dbConnection; // Соединение с базой данных
 
         public MainWindow()
         {
             InitializeComponent();
-
-            // Создание и открытие соединения с базой данных
+            // Инициализация соединения с базой данных
             dbConnection = new SQLiteConnection("Data Source=calculator.db;Version=3;");
             dbConnection.Open();
-
             // Очистка данных из таблицы при каждом новом запуске
             ClearHistory();
-
-            // Создание таблицы в базе данных
+            // Создание таблицы в базе данных, если она не существует
             InitializeDatabase();
         }
 
+        // Инициализация базы данных: создание таблицы, если её нет
         private void InitializeDatabase()
         {
-            // Инициализация базы данных: создание таблицы, если её нет
             using (SQLiteCommand cmd = new SQLiteCommand(dbConnection))
             {
                 cmd.CommandText = "CREATE TABLE IF NOT EXISTS Operations (Id INTEGER PRIMARY KEY AUTOINCREMENT, Expression TEXT, Result REAL, Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)";
@@ -40,9 +37,9 @@ namespace CalculatorMOT
             }
         }
 
+        // Очистка истории операций в базе данных
         private void ClearHistory()
         {
-            // Очистка истории операций в базе данных
             using (SQLiteCommand cmd = new SQLiteCommand(dbConnection))
             {
                 cmd.CommandText = "DELETE FROM Operations";
@@ -50,9 +47,9 @@ namespace CalculatorMOT
             }
         }
 
+        // Обработчик события для кнопок с цифрами, операциями и функциями
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            // Обработчик события для кнопок с цифрами, операциями и функциями
             Button button = (Button)sender;
             string buttonText = button.Content.ToString();
 
@@ -77,7 +74,7 @@ namespace CalculatorMOT
                 try
                 {
                     Parser parser = new Parser(currentInput);
-                    double result = parser.Parse();
+                    decimal result = parser.Parse();
                     firstNumber = result;
                     SaveToHistory(currentInput, result);
                     currentInput = result.ToString();
@@ -91,38 +88,44 @@ namespace CalculatorMOT
             }
             else if (buttonText == "π")
             {
-                SaveToHistory(currentInput, double.NaN);
+                // Сохранение символа π в истории и добавление к текущему вводу
+                SaveToHistory(currentInput, null);
                 currentInput += "3.14";
                 cursorPositionIndex = currentInput.Length;
             }
             else if (buttonText == "(")
             {
+                // Добавление открывающей скобки к текущему вводу
                 currentInput = currentInput.Insert(cursorPositionIndex, "(");
                 cursorPositionIndex++;
             }
             else if (buttonText == ")")
             {
+                // Добавление закрывающей скобки к текущему вводу
                 currentInput = currentInput.Insert(cursorPositionIndex, ")");
                 cursorPositionIndex++;
             }
             else
             {
+                // Добавление символа к текущему вводу
                 currentInput = currentInput.Insert(cursorPositionIndex, buttonText);
                 cursorPositionIndex++;
             }
 
-            display.Content = currentInput;// Обновление отображения текущего ввода
+            // Обновление отображения текущего ввода
+            display.Content = currentInput;
         }
 
+        // Обработчик события для кнопок операций (+, -, *, /)
         private void Operation_Click(object sender, RoutedEventArgs e)
         {
-            // Обработчик события для кнопок операций (+, -, *, /)
             Button button = (Button)sender;
             string buttonText = button.Content.ToString();
 
             if (currentInput != "")
             {
-                if (double.TryParse(currentInput, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out firstNumber))
+                // Попытка преобразовать текущий ввод в десятичное число
+                if (decimal.TryParse(currentInput, System.Globalization.NumberStyles.Any, System.Globalization.CultureInfo.InvariantCulture, out firstNumber))
                 {
                     operation = buttonText;
                     currentInput = "";
@@ -136,38 +139,39 @@ namespace CalculatorMOT
             }
         }
 
+        // Обработчик события для кнопки "История"
         private void ShowHistory_Click(object sender, RoutedEventArgs e)
         {
-            // Обработчик события для кнопки "History" (показать историю операций)
+            // Отображение окна истории операций
             ShowHistoryWindow();
         }
 
+        // Метод для отображения окна истории операций
         private void ShowHistoryWindow()
         {
-            // Отображение окна с историей операций
             HistoryWindow historyWindow = new HistoryWindow();
             historyWindow.ShowDialog();
         }
 
-        private void SaveToHistory(string expression, double result)
+        // Метод для сохранения выражения и результата в базу данных
+        private void SaveToHistory(string expression, decimal? result)
         {
-            // Сохранение операции в базе данных
             using (SQLiteCommand cmd = new SQLiteCommand(dbConnection))
             {
                 cmd.CommandText = "INSERT INTO Operations (Expression, Result) VALUES (@expression, @result)";
                 cmd.Parameters.AddWithValue("@expression", expression);
-                cmd.Parameters.AddWithValue("@result", result);
+                cmd.Parameters.AddWithValue("@result", result.HasValue ? (object)result.Value : DBNull.Value);
                 cmd.ExecuteNonQuery();
             }
         }
+
+        // Метод для вставки выражения в строку ввода из внешнего источника (например, истории)
         public void InsertExpression(string expression)
         {
-            // Вставка выражения из истории в поле ввода
             currentInput = expression;
             cursorPositionIndex = expression.Length;
             display.Content = currentInput;
         }
     }
 }
-
 
